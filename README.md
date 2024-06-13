@@ -1,2 +1,1 @@
-# MerryChristmas
-Wishing a Merry Christmas
+Readme file
