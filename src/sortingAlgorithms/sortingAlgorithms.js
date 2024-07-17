@@ -75,3 +75,46 @@ export function getMergeSortAnimations(array) {
       mainArray[k++] = auxiliaryArray[j++];
     }
   }
+
+  //function to add animations for quick sort
+
+  export function getQuickSortAnimations(array) {
+    const animations = [];
+    if (array.length <= 1) return array;
+    quickSortHelper(array, 0, array.length - 1, animations);
+    return animations;
+  }
+  
+  function quickSortHelper(mainArray, startIdx, endIdx, animations) {
+    if (startIdx < endIdx) {
+      const pivotIdx = partition(mainArray, startIdx, endIdx, animations);
+      quickSortHelper(mainArray, startIdx, pivotIdx - 1, animations);
+      quickSortHelper(mainArray, pivotIdx + 1, endIdx, animations);
+    }
+  }
+  
+  function partition(mainArray, startIdx, endIdx, animations) {
+    const pivot = mainArray[endIdx];
+    let i = startIdx;
+    for (let j = startIdx; j < endIdx; j++) {
+      animations.push(['compare', j, endIdx]);
+      animations.push(['compare', j, endIdx]);
+      if (mainArray[j] < pivot) {
+        animations.push(['swap', i, mainArray[j]]);
+        animations.push(['swap', j, mainArray[i]]);
+        swap(mainArray, i, j);
+        i++;
+      }
+    }
+    animations.push(['swap', i, mainArray[endIdx]]);
+    animations.push(['swap', endIdx, mainArray[i]]);
+    swap(mainArray, i, endIdx);
+    return i;
+  }
+  
+  function swap(array, i, j) {
+    const temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+  
