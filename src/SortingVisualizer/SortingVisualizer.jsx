@@ -1,6 +1,7 @@
 import React from 'react';
 import {getMergeSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
 import {getQuickSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
+import {getHeapSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
 import './SortingVisualizer.css';
 
 
@@ -85,10 +86,30 @@ export default class SortingVisualizer extends React.Component {
     }
   }
 
-
-  heapSort() {
-    // We leave it as an exercise to the viewer of this code to implement this method.
+// heap sort
+heapSort() {
+  const animations = getHeapSortAnimations(this.state.array);
+  for (let i = 0; i < animations.length; i++) {
+    const arrayBars = document.getElementsByClassName('array-bar');
+    const isColorChange = animations[i][0] === 'compare' || animations[i][0] === 'swap';
+    if (isColorChange) {
+      const [action, barOneIdx, barTwoIdx] = animations[i];
+      const barOneStyle = arrayBars[barOneIdx].style;
+      const barTwoStyle = arrayBars[barTwoIdx].style;
+      const color = action === 'compare' ? SECONDARY_COLOR : PRIMARY_COLOR;
+      setTimeout(() => {
+        barOneStyle.backgroundColor = color;
+        barTwoStyle.backgroundColor = color;
+      }, i * ANIMATION_SPEED_MS);
+    } else {
+      setTimeout(() => {
+        const [action, barIdx, newHeight] = animations[i];
+        const barStyle = arrayBars[barIdx].style;
+        barStyle.height = `${newHeight}px`;
+      }, i * ANIMATION_SPEED_MS);
+    }
   }
+}
 
   bubbleSort() {
     // We leave it as an exercise to the viewer of this code to implement this method.

@@ -118,3 +118,57 @@ export function getMergeSortAnimations(array) {
     array[j] = temp;
   }
   
+  //Function for heap sort
+  export function getHeapSortAnimations(array) {
+    const animations = [];
+    if (array.length <= 1) return array;
+    heapSortHelper(array, animations);
+    return animations;
+  }
+  
+  function heapSortHelper(array, animations) {
+    const n = array.length;
+  
+    // Build heap (rearrange array)
+    for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+      heapify(array, n, i, animations);
+    }
+  
+    // One by one extract an element from heap
+    for (let i = n - 1; i > 0; i--) {
+      animations.push(['swap', 0, i]);
+      animations.push(['swapHeight', 0, array[i]]);
+      animations.push(['swapHeight', i, array[0]]);
+      swap(array, 0, i);
+      heapify(array, i, 0, animations);
+    }
+  }
+  
+  function heapify(array, n, i, animations) {
+    let largest = i;
+    const left = 2 * i + 1;
+    const right = 2 * i + 2;
+  
+    if (left < n) {
+      animations.push(['compare', i, left]);
+      if (array[left] > array[largest]) {
+        largest = left;
+      }
+    }
+  
+    if (right < n) {
+      animations.push(['compare', i, right]);
+      if (array[right] > array[largest]) {
+        largest = right;
+      }
+    }
+  
+    if (largest !== i) {
+      animations.push(['swap', i, largest]);
+      animations.push(['swapHeight', i, array[largest]]);
+      animations.push(['swapHeight', largest, array[i]]);
+      swap(array, i, largest);
+      heapify(array, n, largest, animations);
+    }
+  }
+  
