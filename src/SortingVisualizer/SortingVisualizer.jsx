@@ -2,6 +2,7 @@ import React from 'react';
 import {getMergeSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
 import {getQuickSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
 import {getHeapSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
+import {getBubbleSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
 import './SortingVisualizer.css';
 
 
@@ -111,9 +112,34 @@ heapSort() {
   }
 }
 
-  bubbleSort() {
-    // We leave it as an exercise to the viewer of this code to implement this method.
+// Bubble sort
+bubbleSort() {
+  const animations = getBubbleSortAnimations(this.state.array);
+  for (let i = 0; i < animations.length; i++) {
+    const arrayBars = document.getElementsByClassName('array-bar');
+    const isColorChange = i % 4 < 2;
+    if (isColorChange) {
+      const [barOneIdx, barTwoIdx] = animations[i];
+      const barOneStyle = arrayBars[barOneIdx].style;
+      const barTwoStyle = arrayBars[barTwoIdx].style;
+      const color = i % 4 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
+      setTimeout(() => {
+        barOneStyle.backgroundColor = color;
+        barTwoStyle.backgroundColor = color;
+      }, i * ANIMATION_SPEED_MS);
+    } else {
+      setTimeout(() => {
+        const [barOneIdx, barTwoIdx] = animations[i];
+        const barOneStyle = arrayBars[barOneIdx].style;
+        const barTwoStyle = arrayBars[barTwoIdx].style;
+        const barOneHeight = arrayBars[barOneIdx].clientHeight;
+        const barTwoHeight = arrayBars[barTwoIdx].clientHeight;
+        barOneStyle.height = `${barTwoHeight}px`;
+        barTwoStyle.height = `${barOneHeight}px`;
+      }, i * ANIMATION_SPEED_MS);
+    }
   }
+}
 
   // NOTE: This method will only work if your sorting algorithms actually return
   // the sorted arrays; if they return the animations (as they currently do), then
