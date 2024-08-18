@@ -1,1 +1,2 @@
-Welcome to Sorting Visualizer...
+Welcome to Sorting Visualizer... This project shows the visualization of how sorting algorithms works
+
